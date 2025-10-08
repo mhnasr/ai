@@ -39,12 +39,12 @@
             responseDiv.innerText = 'در حال پاسخ‌دهی...';
 
             try {
-
-const res = await fetch('https://nasr302.app.n8n.cloud/webhook/ai-chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question })
-});
+                // این آدرس صحیح است که به API خودتان در همین سایت اشاره دارد
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
 
                 const data = await res.json();
                 const answer = data.choices?.[0]?.message?.content || data.error || JSON.stringify(data);
