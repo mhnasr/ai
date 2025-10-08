@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>چت‌باکس هوشمند</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+        input, button {
+            padding: 12px;
+            width: 100%;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h2>🤖 من درباره تاب‌آوری بپرس!</h2>
+    <form id="chatForm">
+        <input type="text" name="question" placeholder="مثلاً: تاب‌آوری چیست؟" required />
+        <button type="submit">ارسال</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = e.target.question.value;
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerText = 'در حال پاسخ‌دهی...';
+
+            try {
+
+const res = await fetch('https://nasr302.app.n8n.cloud/webhook/ai-chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question })
+});
+
+                const data = await res.json();
+                const answer = data.choices?.[0]?.message?.content || data.error || JSON.stringify(data);
+                responseDiv.innerText = answer;
+            } catch (err) {
+                responseDiv.innerText = 'خطا در ارتباط با سرور!';
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
